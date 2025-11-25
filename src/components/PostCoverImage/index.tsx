@@ -13,9 +13,12 @@ export default function PostCoverImage({
   alt,
 }: PostCoverImageProps) {
   return (
-    <Link className="w-full h-full overflow-hidden rounded-lg" href={href}>
+    <Link
+      className="relative aspect-video w-full overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-800"
+      href={href}
+    >
       <Image
-        className="w-full h-full hover:scale-105 transition-transform object-cover object-center"
+        className="object-cover object-center transition-transform hover:scale-105"
         src={src}
         height={720}
         width={1200}

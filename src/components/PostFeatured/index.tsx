@@ -1,12 +1,14 @@
+import { findAllPublicPostsQueryCache } from '../../lib/post/queries';
 import PostCoverImage from '../PostCoverImage';
 import PostSummary from '../PostSummary';
-import { findAllPublicPostsQuery } from '../lib/post/queries';
 
 export default async function PostFeatured() {
-  const post = await findAllPublicPostsQuery().then((posts) => posts[0]);
+  const posts = await findAllPublicPostsQueryCache();
+  const post = posts[0];
 
-  const slug = 'the-journey-to-mastery-my-path-to-becoming-a-software-engineer';
-  const postLink = `/post/${slug}`;
+  if (!post) return null;
+
+  const postLink = `/post/${post.slug}`;
 
   return (
     <section className="grid grid-cols-1 gap-8 mb-16 sm:grid-cols-2">

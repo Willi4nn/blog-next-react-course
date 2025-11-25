@@ -13,7 +13,7 @@ export default function PostHeading({
 }: PostHeadingProps) {
   const Tag = as;
   return (
-    <Tag className="text-2xl font-extrabold mb-4 mt-2 hover:underline hover:text-slate-500">
+    <Tag className="text-2xl font-extrabold mb-4 mt-2 hover:underline hover:text-blue-500">
       <Link href={href}>{children}</Link>
     </Tag>
   );

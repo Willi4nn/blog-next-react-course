@@ -13,7 +13,7 @@ const JSON_POSTS_FILE_PATH = resolve(
 );
 
 export class JsonPostRepository implements PostRepository {
-  delayMs = 0;
+  delayMs = 1000;
 
   private async simulateDelay(): Promise<void> {
     if (this.delayMs >= 0) {
@@ -39,8 +39,15 @@ export class JsonPostRepository implements PostRepository {
     const posts = await this.findAllPublic();
     const post = posts.find((post) => post.id === id);
 
-    if (!post) throw new Error('Post not found');
+    if (!post) throw new Error('Post not found for Id: ' + id);
 
     return post;
+  }
+
+  async findBySlug(slug: string): Promise<PostModel | null> {
+    const posts = await this.findAllPublic();
+    const post = posts.find((post) => post.slug === slug);
+
+    return post || null;
   }
 }

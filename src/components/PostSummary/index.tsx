@@ -1,4 +1,4 @@
-import { formatDatetime, formatRelativeDate } from '@/utils/format-date';
+import PostDate from '../PostDate';
 import PostHeading from '../PostHeading';
 
 type PostSummaryProps = {
@@ -18,12 +18,7 @@ export default function PostSummary({
 }: PostSummaryProps) {
   return (
     <div className=" flex flex-col justify-center">
-      <time
-        className="text-slate-600 block text-sm"
-        title={formatRelativeDate(createdAt)}
-      >
-        {formatDatetime(createdAt)}
-      </time>
+      <PostDate dateTime={createdAt} />
       <PostHeading as={postHeading} href={postLink}>
         {title}
       </PostHeading>
