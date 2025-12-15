@@ -4,19 +4,21 @@ import Link from 'next/link';
 import React from 'react';
 
 type ErrorMessageProps = {
-  pageTitle: string;
+  pageTitle?: string;
   content: React.ReactNode;
 };
 
 export default function ErrorMessage({
-  pageTitle,
+  pageTitle = 'Ops! Algo deu errado.',
   content,
 }: ErrorMessageProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 rounded-xl bg-slate-100 p-8 dark:bg-slate-900">
-      <h1 className="text-7xl font-extrabold text-slate-900 dark:text-slate-100">
-        {pageTitle}
-      </h1>
+      {pageTitle && (
+        <h1 className="text-7xl font-extrabold text-slate-900 dark:text-slate-100">
+          {pageTitle}
+        </h1>
+      )}
       <p className="mb-4 text-slate-700 dark:text-slate-300">{content}</p>
       <Link
         href="/"

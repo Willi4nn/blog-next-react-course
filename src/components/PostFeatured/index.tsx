@@ -1,9 +1,15 @@
-import { findAllPublicPostsQueryCache } from '../../lib/post/queries';
+import { findAllPublicPostsCache } from '../../lib/post/queries/public';
+import ErrorMessage from '../ErrorMessage';
 import PostCoverImage from '../PostCoverImage';
 import PostSummary from '../PostSummary';
 
 export default async function PostFeatured() {
-  const posts = await findAllPublicPostsQueryCache();
+  const posts = await findAllPublicPostsCache();
+
+  if (posts.length === 0) {
+    return <ErrorMessage content="Nenhum post encontrado." />;
+  }
+
   const post = posts[0];
 
   if (!post) return null;
@@ -11,7 +17,7 @@ export default async function PostFeatured() {
   const postLink = `/post/${post.slug}`;
 
   return (
-    <section className="grid grid-cols-1 gap-8 mb-16 sm:grid-cols-2">
+    <section className="mb-16 grid grid-cols-1 gap-8 sm:grid-cols-2">
       <PostCoverImage
         src={post.coverImageUrl}
         alt={post.title}

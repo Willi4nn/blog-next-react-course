@@ -1,12 +1,14 @@
 import PostCoverImage from '@/components/PostCoverImage';
 import PostSummary from '@/components/PostSummary';
-import { findAllPublicPostsQueryCache } from '@/lib/post/queries';
+import { findAllPublicPostsCache } from '@/lib/post/queries/public';
 
 export async function PostsList() {
-  const posts = await findAllPublicPostsQueryCache();
+  const posts = await findAllPublicPostsCache();
+
+  if (posts.length <= 1) return null;
 
   return (
-    <div className="grid grid-cols-1 mb-16 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="mb-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {posts.slice(1).map((post) => {
         const postLink = `/post/${post.slug}`;
 

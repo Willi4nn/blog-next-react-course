@@ -1,8 +1,10 @@
 import SinglePost from '@/components/SinglePost';
 import { SinglePostSkeleton } from '@/components/Skeleton/SinglePostSkeleton';
-import { findBySlugPostCache } from '@/lib/post/queries';
+import { findPublicBySlugPostCache } from '@/lib/post/queries/public';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
+
+export const dynamic = 'force-static';
 
 type SlugPostProps = {
   params: Promise<{ slug: string }>;
@@ -12,7 +14,7 @@ export async function generateMetadata(
   props: SlugPostProps
 ): Promise<Metadata> {
   const { slug } = await props.params;
-  const post = await findBySlugPostCache(slug);
+  const post = await findPublicBySlugPostCache(slug);
 
   return {
     title: post.title,

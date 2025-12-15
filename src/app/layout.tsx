@@ -1,6 +1,7 @@
 import Container from '@/components/Container';
 import Footer from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
+import ToastifyContainer from '@/components/ToastifyContainer';
 import { ThemeProvider } from '@/contexts/ThemeProvider';
 import type { Metadata } from 'next';
 import './globals.css';
@@ -32,6 +33,8 @@ export default function RootLayout({
             {children}
           </Container>
           <Footer />
+
+          <ToastifyContainer />
         </ThemeProvider>
       </body>
     </html>

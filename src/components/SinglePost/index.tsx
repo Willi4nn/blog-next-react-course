@@ -1,4 +1,4 @@
-import { findBySlugPostCache } from '@/lib/post/queries';
+import { findPublicBySlugPostCache } from '@/lib/post/queries/public';
 import Image from 'next/image';
 import PostDate from '../PostDate';
 import PostHeading from '../PostHeading';
@@ -9,7 +9,7 @@ type SinglePostProps = {
 };
 
 export default async function SinglePost({ slug }: SinglePostProps) {
-  const post = await findBySlugPostCache(slug);
+  const post = await findPublicBySlugPostCache(slug);
 
   return (
     <article className="mx-auto mb-16 flex max-w-5xl flex-col">

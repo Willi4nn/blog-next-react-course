@@ -28,7 +28,7 @@ export function ThemeToggle() {
     <button
       onClick={cycleTheme}
       className="cursor-pointer rounded-lg bg-slate-900 p-2 text-slate-100 transition-colors hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-300"
-      title={`Tema atual: ${theme}`}
+      title={`Tema atual: ${theme === 'light' ? 'Claro' : theme === 'dark' ? 'Escuro' : 'Sistema'}`}
     >
       {getIcon()}
     </button>
