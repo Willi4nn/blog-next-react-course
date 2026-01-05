@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '../Button';
+
 interface DialogProps {
   isVisible?: boolean;
   title: string;
@@ -31,35 +33,34 @@ export default function Dialog({
       onClick={handleCancel}
     >
       <div
-        className="dark: mx-4 w-full max-w-md rounded-lg bg-slate-200 p-4 text-center shadow-lg sm:min-w-[300px] sm:p-6 dark:bg-[#0d1117]"
+        className="dark: mx-4 w-full max-w-md rounded-lg bg-slate-200 p-4 text-center shadow-lg sm:min-w-75 sm:p-6 dark:bg-[#0d1117]"
         role="dialog"
         aria-modal={true}
         aria-labelledby="dialog-title"
         aria-describedby="dialog-description"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 id="dialog-title" className="text-lg font-semibold">
+        <h2
+          id="dialog-title"
+          className="text-lg font-semibold dark:text-slate-100"
+        >
           {title}
         </h2>
-        <p id="dialog-description" className="mb-4 text-sm">
+        <p id="dialog-description" className="mb-4 text-sm dark:text-slate-300">
           {content}
         </p>
         <div className="mt-4 flex justify-around">
-          <button
-            className="flex cursor-pointer rounded border border-red-700 px-4 py-2 text-red-700 transition hover:bg-red-800 hover:text-white disabled:cursor-not-allowed"
+          <Button
+            variant="ghost"
             autoFocus
             onClick={handleCancel}
             disabled={disabled}
           >
             Cancelar
-          </button>
-          <button
-            className="flex cursor-pointer rounded bg-blue-700 px-4 py-2 text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-blue-700/50"
-            onClick={onConfirm}
-            disabled={disabled}
-          >
+          </Button>
+          <Button variant="default" onClick={onConfirm} disabled={disabled}>
             Ok
-          </button>
+          </Button>
         </div>
       </div>
     </div>

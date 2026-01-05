@@ -15,7 +15,7 @@ export default async function PostsListAdmin() {
       {posts.map((post) => {
         return (
           <div
-            className={`flex items-center justify-between px-2 py-2 ${!post.published && 'gap-2 bg-slate-300'}`}
+            className={`flex items-center justify-between px-2 py-2 ${!post.published && 'gap-2 bg-slate-300 text-black'}`}
             key={post.id}
           >
             <Link href={`/admin/post/${post.id}`}>{post.title}</Link>

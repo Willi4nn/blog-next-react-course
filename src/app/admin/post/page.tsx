@@ -1,5 +1,5 @@
 import PostsListAdmin from '@/components/admin/PostsListAdmin';
-import { PostsListSkeleton } from '@/components/Skeleton/PostsListSkeleton';
+import { AdminPostListSkeleton } from '@/components/Skeleton/AdminPostListSkeleton';
 import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
@@ -10,7 +10,7 @@ export const metadata = {
 
 export default async function AdminPost() {
   return (
-    <Suspense fallback={<PostsListSkeleton />}>
+    <Suspense fallback={<AdminPostListSkeleton />}>
       <PostsListAdmin />
     </Suspense>
   );
