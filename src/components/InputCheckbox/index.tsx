@@ -16,9 +16,10 @@ export default function InputCheckbox({
   return (
     <div className="flex items-center gap-3">
       <input
+        {...props}
         type={type}
         id={id}
-        {...props}
+        suppressHydrationWarning
         className={cn(
           'outiline-none h-6 w-6 rounded-sm focus:ring-2 focus:ring-blue-500',
           props.className
@@ -26,7 +27,11 @@ export default function InputCheckbox({
       />
 
       {labelText && (
-        <label htmlFor={id} className="text-sm font-medium">
+        <label
+          htmlFor={id}
+          suppressHydrationWarning
+          className="text-sm font-medium"
+        >
           {labelText}
         </label>
       )}

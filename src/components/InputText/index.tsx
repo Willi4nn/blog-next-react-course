@@ -11,7 +11,7 @@ export default function InputText({ labelText, ...props }: InputTextProps) {
   return (
     <div className="flex flex-col gap-2">
       {labelText && (
-        <label className="text-sm" htmlFor={id}>
+        <label className="text-sm" htmlFor={id} suppressHydrationWarning>
           {labelText}
         </label>
       )}
@@ -28,6 +28,7 @@ export default function InputText({ labelText, ...props }: InputTextProps) {
           props.className
         )}
         id={id}
+        suppressHydrationWarning
       />
     </div>
   );
