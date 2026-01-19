@@ -1,10 +1,6 @@
 'use server';
 
-import {
-  IMAGE_SERVER_URL,
-  IMAGE_UPLOAD_DIRECTORY,
-  IMAGE_UPLOAD_MAX_SIZE,
-} from '@/lib/constants';
+import { getLoginSessionToken } from '@/lib/login/menage-login';
 import { mkdir, writeFile } from 'fs/promises';
 import { extname, resolve } from 'path';
 
@@ -20,6 +16,12 @@ export async function uploadImageAction(
   // Função auxiliar para padronizar o retorno
   const makeResult = ({ url = '', error = '' }) => ({ url, error });
 
+  const isAuthenticated = await getLoginSessionToken();
+
+  if (!isAuthenticated) {
+    return makeResult({ error: 'Faça login novamente.' });
+  }
+
   // Valida se o formData é válido
   if (!(formData instanceof FormData)) {
     return makeResult({ error: 'Dados do formulário inválidos.' });
@@ -34,7 +36,9 @@ export async function uploadImageAction(
   }
 
   // Valida tamanho máximo
-  if (file.size > IMAGE_UPLOAD_MAX_SIZE) {
+  const imageUploadMaxSize =
+    Number(process.env.NEXT_PUBLIC_IMAGE_UPLOAD_MAX_SIZE) || 5242880;
+  if (file.size > imageUploadMaxSize) {
     return makeResult({
       error: 'O tamanho do arquivo excede o limite de 5MB.',
     });
@@ -50,11 +54,9 @@ export async function uploadImageAction(
   const uniqueImageName = `${Date.now()}${imageExtension}`;
 
   // Garante que o diretório de upload existe
-  const uploadFullPath = resolve(
-    process.cwd(),
-    'public',
-    IMAGE_UPLOAD_DIRECTORY
-  );
+  const imageUploadDirectory =
+    process.env.IMAGE_UPLOAD_DIRECTORY || 'uploads/images';
+  const uploadFullPath = resolve(process.cwd(), 'public', imageUploadDirectory);
   await mkdir(uploadFullPath, { recursive: true });
 
   // Converte o arquivo para buffer
@@ -68,7 +70,9 @@ export async function uploadImageAction(
   await writeFile(fileFullPath, buffer);
 
   // Monta a URL pública da imagem
-  const url = `${IMAGE_SERVER_URL}/${uniqueImageName}`;
+  const imageServerUrl =
+    process.env.IMAGE_SERVER_URL || 'http://localhost:3000/uploads/images';
+  const url = `${imageServerUrl}/${uniqueImageName}`;
 
   // Retorna o resultado (ajuste aqui para retornar a url correta)
   return makeResult({ url, error: '' });

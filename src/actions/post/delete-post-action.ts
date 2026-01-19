@@ -1,12 +1,21 @@
 'use server';
 
+import { getLoginSessionToken } from '@/lib/login/menage-login';
 import { postRepository } from '@/repositories/post';
 import { revalidateTag } from 'next/cache';
 
 export async function deletePostAction(id: string) {
+  const isAuthenticated = await getLoginSessionToken();
+
+  if (!isAuthenticated) {
+    return {
+      errors: ['Faça login novamente.'],
+    };
+  }
+
   if (!id || typeof id !== 'string') {
     return {
-      error: 'Dados inválidos',
+      error: 'Dados inválidos.',
     };
   }
 

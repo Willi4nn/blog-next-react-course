@@ -2,13 +2,13 @@
 
 import { createPostAction } from '@/actions/post/create-post-action';
 import { updatePostAction } from '@/actions/post/update-post-action';
+import InputText from '@/components/InputText';
 import { makePartialPublicPost, PublicPost } from '@/dto/post/dto';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useActionState, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button } from '../../Button';
 import InputCheckbox from '../../InputCheckbox';
-import InputText from '../../InputText';
 import { MarkdownEditor } from '../../MarkdownEditor';
 import ImageUploader from '../ImageUploader';
 

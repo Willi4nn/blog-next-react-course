@@ -1,8 +1,9 @@
-import { DEFAULT_DELAY_MS } from '@/lib/constants';
 import { PostModel } from '@/models/post/post-model';
 import { readFile, writeFile } from 'fs/promises';
 import { resolve } from 'path';
 import { PostRepository } from './post-repository';
+
+const defaultDelayMs = Number(process.env.DEFAULT_DELAY_MS) || 0;
 
 const ROOT_DIR = process.cwd();
 const JSON_POSTS_FILE_PATH = resolve(
@@ -15,9 +16,9 @@ const JSON_POSTS_FILE_PATH = resolve(
 
 export class JsonPostRepository implements PostRepository {
   private async simulateWait() {
-    if (DEFAULT_DELAY_MS <= 0) return;
+    if (defaultDelayMs <= 0) return;
 
-    await new Promise((resolve) => setTimeout(resolve, DEFAULT_DELAY_MS));
+    await new Promise((resolve) => setTimeout(resolve, defaultDelayMs));
   }
 
   private async readFromDisk(): Promise<PostModel[]> {
