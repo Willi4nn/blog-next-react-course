@@ -18,8 +18,8 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'blog-next-react-course-production.up.railway.app',
-        pathname: '/uploads/images/**',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
       },
     ],
     dangerouslyAllowSVG: true,

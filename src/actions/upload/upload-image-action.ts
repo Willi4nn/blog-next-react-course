@@ -1,13 +1,19 @@
 'use server';
 
 import { getLoginSessionToken } from '@/lib/login/menage-login';
-import { mkdir, writeFile } from 'fs/promises';
-import { extname, resolve } from 'path';
+import { v2 as cloudinary } from 'cloudinary';
 
 type UploadImageActionResult = {
   url: string;
   error: string;
 };
+
+// Configuração do Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Função server action para processar upload de imagem
 export async function uploadImageAction(
@@ -49,31 +55,32 @@ export async function uploadImageAction(
     return makeResult({ error: 'O arquivo enviado não é uma imagem.' });
   }
 
-  // Gera nome único para a imagem
-  const imageExtension = extname(file.name);
-  const uniqueImageName = `${Date.now()}${imageExtension}`;
+  try {
+    // Converte o arquivo para buffer
+    const fileArrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(fileArrayBuffer);
 
-  // Garante que o diretório de upload existe
-  const imageUploadDirectory =
-    process.env.IMAGE_UPLOAD_DIRECTORY || 'uploads/images';
-  const uploadFullPath = resolve(process.cwd(), 'public', imageUploadDirectory);
-  await mkdir(uploadFullPath, { recursive: true });
+    // Faz upload para o Cloudinary
+    const uploadResult = await new Promise<{ secure_url: string }>(
+      (resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: 'blog-posts',
+            resource_type: 'image',
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result as { secure_url: string });
+          }
+        );
 
-  // Converte o arquivo para buffer
-  const fileArrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(fileArrayBuffer);
+        uploadStream.end(buffer);
+      }
+    );
 
-  // Caminho completo do arquivo a ser salvo
-  const fileFullPath = resolve(uploadFullPath, uniqueImageName);
-
-  // Salva o arquivo no disco
-  await writeFile(fileFullPath, buffer);
-
-  // Monta a URL pública da imagem
-  const imageServerUrl =
-    process.env.IMAGE_SERVER_URL || 'http://localhost:3000/uploads/images';
-  const url = `${imageServerUrl}/${uniqueImageName}`;
-
-  // Retorna o resultado (ajuste aqui para retornar a url correta)
-  return makeResult({ url, error: '' });
+    return makeResult({ url: uploadResult.secure_url });
+  } catch (error) {
+    console.error('Erro ao fazer upload:', error);
+    return makeResult({ error: 'Erro ao fazer upload da imagem.' });
+  }
 }
