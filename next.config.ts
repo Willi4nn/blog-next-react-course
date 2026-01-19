@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         port: '3000',
         pathname: '/uploads/images/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'blog-next-react-course-production.up.railway.app',
+        pathname: '/uploads/images/**',
+      },
     ],
     dangerouslyAllowSVG: true,
     unoptimized: process.env.NODE_ENV === 'development',
